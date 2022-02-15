@@ -83,8 +83,10 @@ DATABASES = {
         'PORT': '1433',
         'USER': '',
         'PASSWORD': '',
+        
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
+            'driver': 'SQL Server Native Client 11.0',
+            'Trusted_Connection': 'yes'
         }
     }
 }
