@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import django
+from django.utils.encoding import force_str
+django.utils.encoding.force_text = force_str
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,23 +34,26 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'tenant_schemas',
     'ekklesia_main.apps.EkklesiaMainConfig',
+    'ekklesia_shared.apps.EkklesiaSharedConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles'
 ]
 
 MIDDLEWARE = [
+    'tenant_schemas.middleware.TenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'ekklesia.urls'
@@ -76,20 +82,21 @@ WSGI_APPLICATION = 'ekklesia.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
+        'ENGINE': 'tenant_schemas.postgresql_backend',
         'NAME': 'ekklesia-py',
         'COLLATION': 'None',
-        'HOST': '.',
-        'PORT': '1433',
-        'USER': '',
-        'PASSWORD': '',
-        
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'USER': 'root',
+        'PASSWORD': 'root',
         'OPTIONS': {
-            'driver': 'SQL Server Native Client 11.0',
-            'Trusted_Connection': 'yes'
         }
     }
 }
+
+DATABASE_ROUTERS = (
+    'tenant_schemas.routers.TenantSyncRouter',
+)
 
 
 # Password validation
@@ -132,3 +139,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+TENANT_MODEL = "ekklesia_shared.Organization"
+SHARED_APPS = (
+    'tenant_schemas',  # mandatory, should always be before any django app,
+    'ekklesia_shared',
+    'django.contrib.contenttypes'
+)
+
+TENANT_APPS = (
+    'django.contrib.contenttypes',
+    # your tenant-specific apps
+    'ekklesia_main'
+)

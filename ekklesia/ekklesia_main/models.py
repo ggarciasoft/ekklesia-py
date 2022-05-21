@@ -1,15 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ekklesia_shared.models import ActivityType, EntityType, MovementType, Position, Asset
 
 # Create your models here.
-class Tenant(models.Model):
-    name = models.CharField(max_length=100, blank=False, null=False)
-    description = models.CharField(max_length=255)
-    
-class UserTenant(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
-    
 class Contact(models.Model):
     first_name = models.CharField(max_length=50, blank=False, null=True)
     last_name =  models.CharField(max_length=50, blank=False, null=False)
@@ -23,39 +16,15 @@ class Contact(models.Model):
     baptism_date = models.DateField(null=True)
     contact_image = models.ImageField(null=True)
     is_active =  models.BooleanField()
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     insert_user = models.ForeignKey(User, related_name="contact_insert_user", on_delete=models.DO_NOTHING)
     insert_date = models.DateTimeField()
     update_user = models.ForeignKey(User, related_name="contact_update_user", null=True, on_delete=models.DO_NOTHING)
-    update_date = models.DateTimeField(null=True)
-    
-class EntityType(models.Model):
-    alias = models.CharField(max_length=20, blank=False, null=False)
-    name = models.CharField(max_length=100, blank=False, null=False)
-    description = models.CharField(max_length=255)
-    is_active = models.BooleanField(null=False)
-    tenant = models.ForeignKey(Tenant, null=True, on_delete=models.CASCADE)
-    insert_user = models.ForeignKey(User, related_name="entity_type_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
-    update_user = models.ForeignKey(User, related_name="entity_type_update_user", null=True, on_delete=models.DO_NOTHING)
-    update_date = models.DateTimeField(null=True)
-    
-class ActivityType(models.Model):
-    alias = models.CharField(max_length=20, blank=False, null=False)
-    name = models.CharField(max_length=100, blank=False, null=False)
-    description = models.CharField(max_length=255)
-    is_active = models.BooleanField(null=False)
-    tenant = models.ForeignKey(Tenant, null=True, on_delete=models.CASCADE)
-    insert_user = models.ForeignKey(User, related_name="activity_type_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
-    update_user = models.ForeignKey(User, related_name="activity_type_update_user", null=True, on_delete=models.DO_NOTHING)
     update_date = models.DateTimeField(null=True)
     
 class Activity(models.Model):
     activity_date = models.DateField()
     comments = models.CharField(max_length=500, blank=False, null=True)
     activity_type = models.ForeignKey(ActivityType, null=True, on_delete=models.SET_NULL)
-    tenant = models.ForeignKey(Tenant, null=True, on_delete=models.CASCADE)
     insert_user = models.ForeignKey(User, related_name="activity_insert_user", on_delete=models.DO_NOTHING)
     insert_date = models.DateTimeField()
     update_user = models.ForeignKey(User, related_name="activity_update_user", null=True, on_delete=models.DO_NOTHING)
@@ -71,34 +40,11 @@ class ActivityAssistant(models.Model):
     update_user = models.ForeignKey(User, related_name="activity_assistant_update_user", null=True, on_delete=models.DO_NOTHING)
     update_date = models.DateTimeField(null=True)
     
-class Position(models.Model):
-    alias = models.CharField(max_length=20, blank=False, null=False)
-    name = models.CharField(max_length=100, blank=False, null=False)
-    description = models.CharField(max_length=255)
-    is_active = models.BooleanField(null=False)
-    tenant = models.ForeignKey(Tenant, null=True, on_delete=models.CASCADE)
-    insert_user = models.ForeignKey(User, related_name="position_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
-    update_user = models.ForeignKey(User, related_name="position_update_user", null=True, on_delete=models.DO_NOTHING)
-    update_date = models.DateTimeField(null=True)
-    
-class MovementType(models.Model):
-    alias = models.CharField(max_length=20, blank=False, null=False)
-    name = models.CharField(max_length=100, blank=False, null=False)
-    description = models.CharField(max_length=255)
-    is_active = models.BooleanField(null=False)
-    tenant = models.ForeignKey(Tenant, null=True, on_delete=models.CASCADE)
-    insert_user = models.ForeignKey(User, related_name="movement_type_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
-    update_user = models.ForeignKey(User, related_name="movement_type_update_user", null=True, on_delete=models.DO_NOTHING)
-    update_date = models.DateTimeField(null=True)
-    
 class Ministry(models.Model):
     alias = models.CharField(max_length=20, blank=False, null=False)
     name = models.CharField(max_length=100, blank=False, null=False)
     description = models.CharField(max_length=255)
     is_active = models.BooleanField(null=False)
-    tenant = models.ForeignKey(Tenant, null=True, on_delete=models.CASCADE)
     insert_user = models.ForeignKey(User, related_name="ministry_insert_user", on_delete=models.DO_NOTHING)
     insert_date = models.DateTimeField()
     update_user = models.ForeignKey(User, related_name="ministry_update_user", null=True, on_delete=models.DO_NOTHING)
@@ -109,22 +55,10 @@ class MemberMinistryPosition(models.Model):
     ministry = models.ForeignKey(Ministry, on_delete=models.CASCADE)
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     
-class Asset(models.Model):
-    alias = models.CharField(max_length=20, blank=False, null=False)
-    name = models.CharField(max_length=100, blank=False, null=False)
-    description = models.CharField(max_length=255)
-    is_active = models.BooleanField(null=False)
-    tenant = models.ForeignKey(Tenant, null=True, on_delete=models.CASCADE)
-    insert_user = models.ForeignKey(User, related_name="asset_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
-    update_user = models.ForeignKey(User, related_name="asset_update_user", null=True, on_delete=models.DO_NOTHING)
-    update_date = models.DateTimeField(null=True)
-    
 class Movement(models.Model):
     movement_date = models.DateTimeField(null=False)
     comments = models.CharField(max_length=500, blank=False, null=True)
     activity = models.ForeignKey(Activity, null=True, on_delete=models.CASCADE)
-    tenant = models.ForeignKey(Tenant, null=True, on_delete=models.CASCADE)
     insert_user = models.ForeignKey(User, related_name="movement_insert_user", on_delete=models.DO_NOTHING)
     insert_date = models.DateTimeField()
     update_user = models.ForeignKey(User, related_name="movement_update_user", null=True, on_delete=models.DO_NOTHING)
