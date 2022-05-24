@@ -34,7 +34,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'tenant_schemas',
+    'django_tenants',
+    'ekklesia_auth.apps.EkklesiaAuthConfig',
     'ekklesia_main.apps.EkklesiaMainConfig',
     'ekklesia_shared.apps.EkklesiaSharedConfig',
     'django.contrib.admin',
@@ -46,7 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'tenant_schemas.middleware.TenantMiddleware',
+    'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'ekklesia.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'tenant_schemas.postgresql_backend',
+        'ENGINE': 'django_tenants.postgresql_backend',
         'NAME': 'ekklesia-py',
         'COLLATION': 'None',
         'HOST': 'localhost',
@@ -95,7 +96,7 @@ DATABASES = {
 }
 
 DATABASE_ROUTERS = (
-    'tenant_schemas.routers.TenantSyncRouter',
+    'django_tenants.routers.TenantSyncRouter',
 )
 
 
@@ -141,13 +142,13 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TENANT_MODEL = "ekklesia_shared.Organization"
 SHARED_APPS = (
-    'tenant_schemas',  # mandatory, should always be before any django app,
+    'django_tenants',  # mandatory, should always be before any django app,
+    'ekklesia_auth',
     'ekklesia_shared',
     'django.contrib.contenttypes'
 )
 
 TENANT_APPS = (
-    'django.contrib.contenttypes',
     # your tenant-specific apps
-    'ekklesia_main'
+    'ekklesia_main',
 )
