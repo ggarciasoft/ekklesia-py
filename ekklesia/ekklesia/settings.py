@@ -35,7 +35,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django_tenants',
-    'ekklesia_auth.apps.EkklesiaAuthConfig',
     'ekklesia_main.apps.EkklesiaMainConfig',
     'ekklesia_shared.apps.EkklesiaSharedConfig',
     'django.contrib.admin',
@@ -141,11 +140,16 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TENANT_MODEL = "ekklesia_shared.Organization"
+TENANT_DOMAIN_MODEL = "ekklesia_shared.Domain"
 SHARED_APPS = (
     'django_tenants',  # mandatory, should always be before any django app,
-    'ekklesia_auth',
-    'ekklesia_shared',
-    'django.contrib.contenttypes'
+    'ekklesia_shared',   
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles'
 )
 
 TENANT_APPS = (

@@ -10,13 +10,13 @@ domain.save()
 
 
 # create your first real tenant
-tenant = Organization(schema_name='goodsheeperd',
+tenant = Organization(schema_name='goodshepherd',
                 name='Iglesia de Dios El Buen Pastor')
 tenant.save() # migrate_schemas automatically called, your tenant is ready to be used!
 
 # Add one or more domains for the tenant
 domain = Domain()
-domain.domain = 'goodsheeperd.localhost' # don't add your port or www here!
+domain.domain = 'goodshepherd.localhost' # don't add your port or www here!
 domain.tenant = tenant
 domain.is_primary = True
 domain.save()

@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django_tenants.admin import TenantAdminMixin
 
 # Register your models here.
 from .models import EntityType, Organization
