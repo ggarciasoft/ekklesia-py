@@ -7,9 +7,14 @@ from .models import Position
 from .models import MovementType
 from .models import Asset
 
-admin.site.register(EntityType)
-admin.site.register(ActivityType)
-admin.site.register(Position)
-admin.site.register(Asset)
-admin.site.register(MovementType)
+class CommonTypeAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['alias', 'name', 'description', 'is_active']})
+    ]
+
+admin.site.register(EntityType, CommonTypeAdmin)
+admin.site.register(ActivityType, CommonTypeAdmin)
+admin.site.register(Position, CommonTypeAdmin)
+admin.site.register(Asset, CommonTypeAdmin)
+admin.site.register(MovementType, CommonTypeAdmin)
 admin.site.register(Organization)

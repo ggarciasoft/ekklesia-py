@@ -7,9 +7,16 @@ from .models import MemberMinistryPosition
 from .models import Movement
 from .models import MovementDetail
 
+class MovementDetailInline(admin.TabularInline):
+    model = MovementDetail
+    extra = 3
+
+class MovementAdmin(admin.ModelAdmin):
+    inlines = [MovementDetailInline]
+
+
 admin.site.register(Contact)
 admin.site.register(Activity)
 admin.site.register(ActivityAssistant)
 admin.site.register(MemberMinistryPosition)
-admin.site.register(Movement)
-admin.site.register(MovementDetail)
+admin.site.register(Movement, MovementAdmin)

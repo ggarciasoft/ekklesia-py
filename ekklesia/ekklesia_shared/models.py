@@ -16,9 +16,11 @@ class EntityType(models.Model):
     description = models.CharField(max_length=255)
     is_active = models.BooleanField(null=False)
     insert_user = models.ForeignKey(User, related_name="entity_type_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
+    insert_date = models.DateTimeField(auto_now_add=True)
     update_user = models.ForeignKey(User, related_name="entity_type_update_user", null=True, on_delete=models.DO_NOTHING)
     update_date = models.DateTimeField(null=True)
+    def __str__(self):
+        return self.name
     
 class ActivityType(models.Model):
     alias = models.CharField(max_length=20, blank=False, null=False)
@@ -26,9 +28,11 @@ class ActivityType(models.Model):
     description = models.CharField(max_length=255)
     is_active = models.BooleanField(null=False)
     insert_user = models.ForeignKey(User, related_name="activity_type_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
+    insert_date = models.DateTimeField(auto_now_add=True)
     update_user = models.ForeignKey(User, related_name="activity_type_update_user", null=True, on_delete=models.DO_NOTHING)
     update_date = models.DateTimeField(null=True)
+    def __str__(self):
+        return self.name
     
 class Position(models.Model):
     alias = models.CharField(max_length=20, blank=False, null=False)
@@ -36,9 +40,11 @@ class Position(models.Model):
     description = models.CharField(max_length=255)
     is_active = models.BooleanField(null=False)
     insert_user = models.ForeignKey(User, related_name="position_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
+    insert_date = models.DateTimeField(auto_now_add=True)
     update_user = models.ForeignKey(User, related_name="position_update_user", null=True, on_delete=models.DO_NOTHING)
     update_date = models.DateTimeField(null=True)
+    def __str__(self):
+        return self.name
     
 class MovementType(models.Model):
     alias = models.CharField(max_length=20, blank=False, null=False)
@@ -46,9 +52,11 @@ class MovementType(models.Model):
     description = models.CharField(max_length=255)
     is_active = models.BooleanField(null=False)
     insert_user = models.ForeignKey(User, related_name="movement_type_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
+    insert_date = models.DateTimeField(auto_now_add=True)
     update_user = models.ForeignKey(User, related_name="movement_type_update_user", null=True, on_delete=models.DO_NOTHING)
     update_date = models.DateTimeField(null=True)
+    def __str__(self):
+        return self.name
     
 class Asset(models.Model):
     alias = models.CharField(max_length=20, blank=False, null=False)
@@ -56,6 +64,8 @@ class Asset(models.Model):
     description = models.CharField(max_length=255)
     is_active = models.BooleanField(null=False)
     insert_user = models.ForeignKey(User, related_name="asset_insert_user", on_delete=models.DO_NOTHING)
-    insert_date = models.DateTimeField()
+    insert_date = models.DateTimeField(auto_now_add=True)
     update_user = models.ForeignKey(User, related_name="asset_update_user", null=True, on_delete=models.DO_NOTHING)
     update_date = models.DateTimeField(null=True)
+    def __str__(self):
+        return self.name
